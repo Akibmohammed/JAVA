@@ -1,0 +1,192 @@
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Scanner;
+
+class Book {
+    private int accessionNumber;
+    private String bookName;
+
+    public Book(int accessionNumber, String bookName) {
+        this.accessionNumber = accessionNumber;
+        this.bookName = bookName;
+    }
+
+    public int getAccessionNumber() {
+        return accessionNumber;
+    }
+
+    public String getBookName() {
+        return bookName;
+    }
+}
+
+class GeneralInfo extends Book {
+    private String author;
+
+    public GeneralInfo(int accessionNumber, String bookName, String author) {
+        super(accessionNumber, bookName);
+        this.author = author;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+}
+
+class PublicationInfo extends GeneralInfo {
+    private int yearOfPublication;
+    private String publisher;
+
+    public PublicationInfo(int accessionNumber, String bookName, String author, int yearOfPublication, String publisher) {
+        super(accessionNumber, bookName, author);
+        this.yearOfPublication = yearOfPublication;
+        this.publisher = publisher;
+    }
+
+    public int getYearOfPublication() {
+        return yearOfPublication;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+}
+
+class FinancialInfo extends PublicationInfo {
+    private double cost;
+
+    public FinancialInfo(int accessionNumber, String bookName, String author, int yearOfPublication, String publisher, double cost) {
+        super(accessionNumber, bookName, author, yearOfPublication, publisher);
+        this.cost = cost;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+}
+class LibrarySystem {
+    private static final String FILE_NAME = "books.txt";
+
+    private ArrayList<FinancialInfo> books;
+
+    public LibrarySystem() {
+        books = new ArrayList<>();
+    }
+
+    public void buildMasterTable() {
+        // Add sample books to the library system
+        books.add(new FinancialInfo(101, "Book1", "Author1", 2000, "Publisher1", 25.0));
+        books.add(new FinancialInfo(102, "Book2", "Author2", 2005, "Publisher2", 30.0));
+        books.add(new FinancialInfo(103, "Book3", "Author3", 2010, "Publisher3", 20.0));
+    }
+
+    public void listBooks() {
+        System.out.println("Listing all books:");
+        for (FinancialInfo book : books) {
+            System.out.println("Accession Number: " + book.getAccessionNumber());
+            System.out.println("Book Name: " + book.getBookName());
+            System.out.println("Author: " + book.getAuthor());
+            System.out.println("Year of Publication: " + book.getYearOfPublication());
+            System.out.println("Publisher: " + book.getPublisher());
+            System.out.println("Cost: $" + book.getCost());
+            System.out.println("--------------");
+        }
+    }
+
+    public void writeToFile() {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_NAME))) {
+            for (FinancialInfo book : books) {
+                writer.println(book.getAccessionNumber() + ","
+                        + book.getBookName() + ","
+                        + book.getAuthor() + ","
+                        + book.getYearOfPublication() + ","
+                        + book.getPublisher() + ","
+                        + book.getCost());
+            }
+            System.out.println("Data written to file successfully.");
+        } catch (IOException e) {
+            System.out.println("Error writing to file: " + e.getMessage());
+        }
+    }
+
+    public void insertNewEntry(int accessionNumber, String bookName, String author, int yearOfPublication, String publisher, double cost) {
+        FinancialInfo newBook = new FinancialInfo(accessionNumber, bookName, author, yearOfPublication, publisher, cost);
+        books.add(newBook);
+        System.out.println("New entry inserted successfully.");
+    }
+
+    public void deleteOldEntry(int accessionNumber) {
+        books.removeIf(book -> book.getAccessionNumber() == accessionNumber);
+        System.out.println("Entry deleted successfully.");
+    }
+
+    public void sortByAccessionNumber() {
+        Collections.sort(books, Comparator.comparing(FinancialInfo::getAccessionNumber));
+        System.out.println("Books sorted by Accession Number.");
+    }
+
+    public static void main(String[] args) {
+        LibrarySystem librarySystem = new LibrarySystem();
+        librarySystem.buildMasterTable();
+
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+        do {
+            System.out.println("1. List all books");
+            System.out.println("2. Write to file");
+            System.out.println("3. Insert a new entry");
+            System.out.println("4. Delete an old entry");
+            System.out.println("5. Sort entries by Accession Number");
+            System.out.println("6. Exit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+
+            switch (choice) {
+                case 1:
+                    librarySystem.listBooks();
+                    break;
+                case 2:
+                    librarySystem.writeToFile();
+                    break;
+                case 3:
+                    System.out.print("Enter Accession Number: ");
+                    int accessionNumber = scanner.nextInt();
+                    scanner.nextLine(); // Consume the newline character
+                    System.out.print("Enter Book Name: ");
+                    String bookName = scanner.nextLine();
+                    System.out.print("Enter Author: ");
+                    String author = scanner.nextLine();
+                    System.out.print("Enter Year of Publication: ");
+                    int yearOfPublication = scanner.nextInt();
+                    scanner.nextLine(); // Consume the newline character
+                    System.out.print("Enter Publisher: ");
+                    String publisher = scanner.nextLine();
+                    System.out.print("Enter Cost: ");
+                    double cost = scanner.nextDouble();
+                    librarySystem.insertNewEntry(accessionNumber, bookName, author, year);
+                    break;
+                    
+                                case 4:
+                    System.out.print("Enter Accession Number to delete: ");
+                    int accessionToDelete = scanner.nextInt();
+                    librarySystem.deleteOldEntry(accessionToDelete);
+                    break;
+                case 5:
+                    librarySystem.sortByAccessionNumber();
+                    break;
+                case 6:
+                    System.out.println("Exiting the program.");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
+            }
+        } while (choice != 6);
+
+        scanner.close();
+    }
+}
+
+                    
