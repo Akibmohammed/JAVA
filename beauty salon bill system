@@ -1,0 +1,77 @@
+class DiscountRate {
+    static final double SERVICE_DISCOUNT_PREMIUM = 0.20;
+    static final double SERVICE_DISCOUNT_GOLD = 0.15;
+    static final double SERVICE_DISCOUNT_SILVER = 0.10;
+    static final double PRODUCT_DISCOUNT = 0.10;
+
+    static double getServiceDiscountRate(String membership) {
+        switch (membership.toLowerCase()) {
+            case "premium":
+                return SERVICE_DISCOUNT_PREMIUM;
+            case "gold":
+                return SERVICE_DISCOUNT_GOLD;
+            case "silver":
+                return SERVICE_DISCOUNT_SILVER;
+            default:
+                return 0.0; // No discount for non-members
+        }
+    }
+
+    static double getProductDiscountRate() {
+        return PRODUCT_DISCOUNT;
+    }
+}
+
+class Customer {
+    private String name;
+    private String membership;
+
+    public Customer(String name, String membership) {
+        this.name = name;
+        this.membership = membership;
+    }
+
+    public String getMembership() {
+        return membership;
+    }
+}
+
+class Visit {
+    private Customer customer;
+    private double serviceExpense;
+    private double productExpense;
+
+    public Visit(Customer customer, double serviceExpense, double productExpense) {
+        this.customer = customer;
+        this.serviceExpense = serviceExpense;
+        this.productExpense = productExpense;
+    }
+
+    public double getTotalExpense() {
+        double serviceDiscount = serviceExpense * DiscountRate.getServiceDiscountRate(customer.getMembership());
+        double productDiscount = productExpense * DiscountRate.getProductDiscountRate();
+
+        return serviceExpense - serviceDiscount + productExpense - productDiscount;
+    }
+}
+
+class BeautySalon {
+    public static void main(String[] args) {
+        // Example usage:
+        Customer premiumCustomer = new Customer("Alice", "premium");
+        Visit visit1 = new Visit(premiumCustomer, 50.0, 30.0);
+        System.out.println("Total Expense for " + premiumCustomer.getMembership() + " member: $" + visit1.getTotalExpense());
+
+        Customer goldCustomer = new Customer("Bob", "gold");
+        Visit visit2 = new Visit(goldCustomer, 40.0, 20.0);
+        System.out.println("Total Expense for " + goldCustomer.getMembership() + " member: $" + visit2.getTotalExpense());
+
+        Customer silverCustomer = new Customer("Charlie", "silver");
+        Visit visit3 = new Visit(silverCustomer, 60.0, 25.0);
+        System.out.println("Total Expense for " + silverCustomer.getMembership() + " member: $" + visit3.getTotalExpense());
+
+        Customer nonMember = new Customer("David", "none");
+        Visit visit4 = new Visit(nonMember, 70.0, 35.0);
+        System.out.println("Total Expense for non-member: $" + visit4.getTotalExpense());
+    }
+}
