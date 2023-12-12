@@ -1,0 +1,67 @@
+// Online Java Compiler
+// Use this editor to write, compile and run your Java code online
+import java.io.*;
+
+class file{
+    public static void main(String[]args){
+        FileInputStream f1=null;
+        FileInputStream f2=null;
+        FileOutputStream f3=null;
+        
+        try{
+            f1= new FileInputStream("file1.txt");
+            f2= new FileInputStream("file2.txt");
+            f3= new FileOutputStream("file3.txt");
+        }
+        catch(FileNotFoundException e){
+            System.out.println("One or more file not found");
+            return;
+        }
+        
+        try{
+            DataInputStream ip1=new DataInputStream(f1);
+            DataInputStream ip2=new DataInputStream(f2);
+            DataOutputStream op=new DataOutputStream(f3);
+            
+            while(true){
+                try{
+                    int id1=ip1.readInt();
+                    int age=ip1.readInt();
+                    int id2=ip2.readInt();
+                    String name=ip2.readUTF();
+                    
+                    op.writeInt(id1);
+                    op.writeInt(age);
+                    op.writeUTF(name);
+                }
+                catch(EOFException e){
+                    System.out.println("Error reading or writing the files");
+                    break;
+                }
+                
+            }
+            
+        }
+        catch(IOException e){
+            System.out.println("Error");
+            
+        }
+        finally{
+            try{
+                if(f1!=null){
+                    f1.close();
+                }
+                if(f2!=null){
+                    f2.close();
+                    
+                }
+                if(f3!=null){
+                    f3.close();
+                }
+            }
+            catch(IOException e){
+                System.out.println("error occured");
+            }
+        }
+    }
+}
