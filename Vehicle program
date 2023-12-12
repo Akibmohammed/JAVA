@@ -1,0 +1,139 @@
+class Vehicle {
+    String make;
+    String model;
+    int year;
+    String fuelType;
+
+    public Vehicle(String make, String model, int year, String fuelType) {
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.fuelType = fuelType;
+    }
+
+    void displayCategory() {
+        System.out.println("Vehicle Category: General Vehicle");
+    }
+
+    void calculateMaxSpeed() {
+        System.out.println("Max Speed: Not specified");
+    }
+
+    void calculateDistance() {
+        System.out.println("Distance Traveled: Not specified");
+    }
+
+    void calculateFuelEfficiency() {
+        System.out.println("Fuel Efficiency: Not specified");
+    }
+}
+
+class Car extends Vehicle {
+    public Car(String make, String model, int year, String fuelType) {
+        super(make, model, year, fuelType);
+    }
+
+    @Override
+    void displayCategory() {
+        System.out.println("Vehicle Category: Car");
+    }
+
+    @Override
+    void calculateMaxSpeed() {
+        System.out.println("Max Speed: 120 mph");
+    }
+
+    @Override
+    void calculateDistance() {
+        System.out.println("Distance Traveled: 300 miles");
+    }
+
+    @Override
+    void calculateFuelEfficiency() {
+        System.out.println("Fuel Efficiency: 25 mpg");
+    }
+}
+
+class Truck extends Vehicle {
+    public Truck(String make, String model, int year, String fuelType) {
+        super(make, model, year, fuelType);
+    }
+
+    @Override
+    void displayCategory() {
+        System.out.println("Vehicle Category: Truck");
+    }
+
+    @Override
+    void calculateMaxSpeed() {
+        System.out.println("Max Speed: 80 mph");
+    }
+
+    @Override
+    void calculateDistance() {
+        System.out.println("Distance Traveled: 200 miles");
+    }
+
+    @Override
+    void calculateFuelEfficiency() {
+        System.out.println("Fuel Efficiency: 15 mpg");
+    }
+}
+
+class Motorcycle extends Vehicle {
+    public Motorcycle(String make, String model, int year, String fuelType) {
+        super(make, model, year, fuelType);
+    }
+
+    @Override
+    void displayCategory() {
+        System.out.println("Vehicle Category: Motorcycle");
+    }
+
+    @Override
+    void calculateMaxSpeed() {
+        System.out.println("Max Speed: 150 mph");
+    }
+
+    @Override
+    void calculateDistance() {
+        System.out.println("Distance Traveled: 100 miles");
+    }
+
+    @Override
+    void calculateFuelEfficiency() {
+        System.out.println("Fuel Efficiency: 40 mpg");
+    }
+}
+
+class VehicleProgram {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter vehicle details (make model year fuelType):");
+        String input = scanner.nextLine();
+
+        String[] details = input.split(" ");
+        String make = details[0];
+        String model = details[1];
+        int year = Integer.parseInt(details[2]);
+        String fuelType = details[3];
+
+        Vehicle vehicle;
+
+        if (fuelType.equalsIgnoreCase("Gasoline")){
+            vehicle = new Car(make, model, year, fuelType);
+        } else if (fuelType.equalsIgnoreCase("Electric")) {
+            vehicle = new Car(make, model, year, fuelType);
+        } else {
+            vehicle = new Truck(make, model, year, fuelType);
+        }
+
+        vehicle.displayCategory();
+        vehicle.calculateMaxSpeed();
+        vehicle.calculateDistance();
+        vehicle.calculateFuelEfficiency();
+
+        scanner.close();
+    }
+}
