@@ -1,0 +1,29 @@
+class Employee {
+    void display() {
+        System.out.println("The class name is Employee");
+    }
+
+    void calcSalary() {
+        System.out.println("The salary of employee is 10000");
+    }
+}
+
+class Engineer extends Employee {
+    @Override
+    void calcSalary() {
+        System.out.println("The salary of engineer is 20000");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Using only one object for both classes
+        Employee employee = new Engineer();
+
+        // Call the display() method of Employee class
+        employee.display();
+
+        // Call the calcSalary() method, it will use the overridden method in Engineer class
+        employee.calcSalary();
+    }
+}
