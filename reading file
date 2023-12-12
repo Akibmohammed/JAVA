@@ -1,0 +1,31 @@
+import java.io.*;
+
+class FileExample {
+    public static void main(String[] args) {
+        int i;
+        FileInputStream fin = null;  
+        try {
+            fin = new FileInputStream("sample.txt");
+        } catch (FileNotFoundException e) {
+            System.out.println("No such file");
+        }
+
+        try {
+            i = fin.read();
+            while (i != -1) {  
+                System.out.print((char) i);  
+                i = fin.read();  
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file");
+        } finally {
+            try {
+                if (fin != null) {  
+                    fin.close();
+                }
+            } catch (IOException e) {
+                System.out.println("Error closing file");
+            }
+        }
+    }
+}
